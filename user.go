@@ -6,6 +6,6 @@ type User struct {
 }
 
 type Coordinates struct {
-	X string `json:"x"`
-	Y string `json:"y"`
+	X float32 `json:"x"`
+	Y float32 `json:"y"`
 }
