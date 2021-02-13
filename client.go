@@ -55,6 +55,7 @@ func (s subscription) readPump() {
 			}
 			break
 		}
+		log.Printf("Msg: %v\n", string(msg))
 		m := message{msg, s.room}
 		h.broadcast <- m
 	}
