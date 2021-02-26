@@ -47,7 +47,7 @@ func InitializeUsers() {
 		},
 	}
 
-	usersNearby := []User{}
+	usersNearby = []User{}
 	usersNearby = append(usersNearby, firstUser)
 	usersNearby = append(usersNearby, secondUser)
 	usersNearby = append(usersNearby, thirdUser)
@@ -65,14 +65,13 @@ type PendingInvitations struct {
 	Received []string `json:"received"`
 }
 type Matches struct {
-	Username string
-	Pending  PendingInvitations `json:"pending"`
-	Matches  []string           `json:"matches"`
+	Pending PendingInvitations `json:"pending"`
+	Matches []string           `json:"matches"`
 }
 
 func InitializeMatches() {
+
 	firstMatch := Matches{
-		Username: "superuser123",
 		Pending: PendingInvitations{
 			Sent:     []string{},
 			Received: []string{"thirdUSer"},
@@ -81,7 +80,6 @@ func InitializeMatches() {
 	}
 
 	secondMatch := Matches{
-		Username: "JohnyFourthUserDoe",
 		Pending: PendingInvitations{
 			Sent:     []string{"anonuser"},
 			Received: []string{},
@@ -90,7 +88,6 @@ func InitializeMatches() {
 	}
 
 	thirdMatch := Matches{
-		Username: "anonuser",
 		Pending: PendingInvitations{
 			Sent:     []string{},
 			Received: []string{"JohnyFourthUserDoe"},
@@ -99,7 +96,6 @@ func InitializeMatches() {
 	}
 
 	fourthMatch := Matches{
-		Username: "thirdUSer",
 		Pending: PendingInvitations{
 			Sent:     []string{"thirdUSer"},
 			Received: []string{},
@@ -107,7 +103,7 @@ func InitializeMatches() {
 		Matches: []string{},
 	}
 
-	matches := make(map[string]Matches)
+	matches = make(map[string]Matches)
 	matches["superuser123"] = firstMatch
 	matches["JohnyFourthUserDoe"] = secondMatch
 	matches["anonuser"] = thirdMatch
@@ -115,5 +111,20 @@ func InitializeMatches() {
 }
 
 func GetMatches(username string) Matches {
+	return matches[username]
+}
+
+func UpdateMatches(username string, newMatches Matches) Matches {
+	matches[username] = newMatches
+	return matches[username]
+}
+
+func MatchRequest(username, invitedUser string) Matches {
+	sent := matches[username].Pending.Sent
+	sent = append(sent, invitedUser)
+
+	received := matches[username].Pending.Received
+	received = append(received, username)
+
 	return matches[username]
 }
