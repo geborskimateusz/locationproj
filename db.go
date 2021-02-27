@@ -1,7 +1,7 @@
 package main
 
 var usersNearby []User
-var matches map[string]Matches
+var matches map[string]*Matches
 
 // USERS SCHEMA
 
@@ -74,14 +74,14 @@ func InitializeMatches() {
 	firstMatch := Matches{
 		Pending: PendingInvitations{
 			Sent:     []string{},
-			Received: []string{"thirdUSer"},
+			Received: []string{"fourthMatch"},
 		},
 		Matches: []string{"anonuser"},
 	}
 
 	secondMatch := Matches{
 		Pending: PendingInvitations{
-			Sent:     []string{"anonuser"},
+			Sent:     []string{},
 			Received: []string{},
 		},
 		Matches: []string{"anonuser"},
@@ -90,41 +90,39 @@ func InitializeMatches() {
 	thirdMatch := Matches{
 		Pending: PendingInvitations{
 			Sent:     []string{},
-			Received: []string{"JohnyFourthUserDoe"},
+			Received: []string{"fourthMatch"},
 		},
-		Matches: []string{"superuser123"},
+		Matches: []string{"superuser123", "JohnyFourthUserDoe"},
 	}
 
 	fourthMatch := Matches{
 		Pending: PendingInvitations{
-			Sent:     []string{"thirdUSer"},
+			Sent:     []string{"anonuser"},
 			Received: []string{},
 		},
 		Matches: []string{},
 	}
 
-	matches = make(map[string]Matches)
-	matches["superuser123"] = firstMatch
-	matches["JohnyFourthUserDoe"] = secondMatch
-	matches["anonuser"] = thirdMatch
-	matches["fourthMatch"] = fourthMatch
+	matches = make(map[string]*Matches)
+	matches["superuser123"] = &firstMatch
+	matches["JohnyFourthUserDoe"] = &secondMatch
+	matches["anonuser"] = &thirdMatch
+	matches["fourthMatch"] = &fourthMatch
 }
 
 func GetMatches(username string) Matches {
-	return matches[username]
+	return *matches[username]
 }
 
 func UpdateMatches(username string, newMatches Matches) Matches {
-	matches[username] = newMatches
-	return matches[username]
+	matches[username] = &newMatches
+	return *matches[username]
 }
 
 func MatchRequest(username, invitedUser string) Matches {
-	sent := matches[username].Pending.Sent
-	sent = append(sent, invitedUser)
-
-	received := matches[username].Pending.Received
-	received = append(received, username)
-
-	return matches[username]
+	sent := &matches[username].Pending.Sent
+	*sent = append(*sent, invitedUser)
+	received := &matches[invitedUser].Pending.Received
+	*received = append(*received, username)
+	return *matches[username]
 }

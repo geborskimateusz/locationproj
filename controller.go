@@ -4,6 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// NearbyUsers godoc
+// @Summary Retrieves nearby users
+// @Produce json
+// @Success 200 {object} models.User
+// @Router api/v1/users/findNearby
 func NearbyUsers(c *gin.Context) {
 	c.JSON(200, gin.H{"users": GetUsersNearby()})
 }
@@ -20,7 +25,7 @@ func UpdateMatchesStatusByUsername(c *gin.Context) {
 	var matches Matches
 	err := c.ShouldBindJSON(&matches)
 	if err != nil {
-		c.JSON(200, "dsadsadsa")
+		c.JSON(200, "Wrong JSON structure")
 		return
 	}
 
@@ -36,7 +41,7 @@ func Invite(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&invitedUser)
 	if err != nil {
-		c.JSON(200, "dsadsadsa")
+		c.JSON(200, "Wrong JSON strucure")
 		return
 	}
 
