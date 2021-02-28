@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -13,10 +14,15 @@ func TestDB(t *testing.T) {
 		firstUser := "superuser123"
 		secUser := "JohnyFourthUserDoe"
 
+		a := GetMatches(firstUser)
+		fmt.Println(a)
 		MatchRequest(firstUser, secUser)
 
 		firstUserMatches := GetMatches(firstUser)
 		secondUserMatches := GetMatches(secUser)
+
+		fmt.Println(firstUserMatches)
+		// fmt.Println(secondUserMatches)
 
 		assertContains(t, firstUserMatches.Pending.Sent, secUser)
 		assertContains(t, secondUserMatches.Pending.Received, firstUser)
