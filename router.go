@@ -6,7 +6,7 @@ const (
 	nearbyUsersRoute   string = "/users/findNearby"
 	matchesStatusRoute string = "/matchesStatus/:currentUser"
 	inviteRoute        string = "/invite/:currentUser"
-	chatRoute          string = "/ws/:roomId"
+	chatRoute          string = "/ws/:currentUser/connectedTo/:connectedTo"
 )
 
 func RouterInstance() *gin.Engine {

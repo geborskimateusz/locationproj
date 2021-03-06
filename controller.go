@@ -43,6 +43,13 @@ func Invite(c *gin.Context) {
 }
 
 func JoinChatroom(c *gin.Context) {
-	roomId := c.Param("roomId")
-	serveWs(c.Writer, c.Request, roomId)
+	currentUser := c.Param("currentUser")
+	connectedTo := c.Param("connectedTo")
+
+	if ok := CheckMatch(currentUser, connectedTo); ok {
+		channel := GenerateUniqueChannel(currentUser, connectedTo)
+		serveWs(c.Writer, c.Request, channel)
+	} else {
+		c.JSON(404, "Channel does not exist")
+	}
 }

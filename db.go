@@ -126,3 +126,31 @@ func MatchRequest(username, invitedUser string) Matches {
 	*received = append(*received, username)
 	return *matches[username]
 }
+
+func CheckMatch(currentUser, requestedUser string) bool {
+	currentUserMatches := &matches[currentUser].Matches
+	requestedUserMatches := &matches[requestedUser].Matches
+
+	requestedToCurrent := containsMatch(currentUserMatches, requestedUser)
+	currentToRequested := containsMatch(requestedUserMatches, currentUser)
+
+	if requestedToCurrent && currentToRequested {
+		return true
+	}
+	return false
+}
+
+func containsMatch(matches *[]string, nickname string) bool {
+	return contains(len(*matches), func(i int) bool {
+		return (*matches)[i] == nickname
+	})
+}
+
+func contains(n int, match func(i int) bool) bool {
+	for i := 0; i < n; i++ {
+		if match(i) {
+			return true
+		}
+	}
+	return false
+}

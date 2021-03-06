@@ -28,6 +28,37 @@ func TestDB(t *testing.T) {
 		assertContains(t, secondUserMatches.Pending.Received, firstUser)
 
 	})
+
+	t.Run("CheckMatches", func(t *testing.T) {
+
+		firstUser := "anonuser"
+		secUser := "JohnyFourthUserDoe"
+
+		containsFirstUser := CheckMatch(secUser, firstUser)
+		secUserMatches := GetMatches(secUser)
+
+		if !containsFirstUser {
+			t.Errorf("Element %v does not exist in %v", firstUser, secUserMatches)
+		}
+
+	})
+}
+
+func TestGenerateChannel(t *testing.T) {
+
+	t.Run("Match request", func(t *testing.T) {
+
+		firstUser := "superuser123"
+		secUser := "JohnyFourthUserDoe"
+
+		firstHash := GenerateUniqueChannel(firstUser, secUser)
+		secHash := GenerateUniqueChannel(firstUser, secUser)
+		if firstHash != secHash {
+			t.Errorf("Different channels %v and %v", firstHash, secHash)
+		}
+
+	})
+
 }
 
 func assertContains(t *testing.T, s []string, e string) {
